@@ -6,12 +6,11 @@ class User < ActiveRecord::Base
 
 
   def add_ingredient(ingredient_string)
-    new_ingredient = Ingredient.create_or_find_by(name: ingredient_string.downcase)
+    new_ingredient = Ingredient.find_or_create_by(name: ingredient_string.downcase)
     unless self.ingredients.include?(new_ingredient)
       self.ingredients << new_ingredient
     end
   end
-
 
 
 end
