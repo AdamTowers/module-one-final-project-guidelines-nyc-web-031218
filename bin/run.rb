@@ -9,6 +9,7 @@ def main_menu
   puts "- Favorites : display all your currently saved cocktails"
   puts "- Add Cocktail : saves a cocktail to your favorites"
   puts "- My Options : displays cocktails possible with your inventory"
+  puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
   puts "- Exit : quit this program"
 end
 
@@ -48,6 +49,12 @@ def run
       current_user.add_cocktail(input)
     when 'my options'
       puts current_user.get_possible_drinks
+    when 'search cocktail'
+      puts "What cocktail would you like to look up?"
+      searched_cocktail = gets.chomp.downcase
+      Cocktail.get_info(searched_cocktail)
+      #insert lookup method here
+      # Cocktail.find_by(name: input)
     when 'exit'
       puts "Goodbye"
       break
