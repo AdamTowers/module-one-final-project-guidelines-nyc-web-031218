@@ -5,27 +5,25 @@ class User < ActiveRecord::Base
   has_many :ingredients, through: :user_ingredients
 
 
-  # def add_ingredient(ingredient_string)
-  #   new_ingredient = Ingredient.find_or_create_by(name: ingredient_string.downcase)
-  #   unless self.ingredients.include?(new_ingredient)
-  #     self.ingredients << new_ingredient
-  #   end
-  # end
-
-
-  def add_item(query_string, type)
-    if type == "ingredient"
-      new_ingredient = Ingredient.find_or_create_by(name: query_string.downcase)
-      unless self.ingredients.include?(new_ingredient)
-        self.ingredients << new_ingredient
-      end
-    elsif type == "cocktail"
-      new_cocktail = Cocktail.find_or_create_by(name: query_string.downcase)
-      unless self.cocktails.include?(new_cocktail)
-        self.cocktails << new_cocktail
-      end
+  def add_ingredient(ingredient_string)
+    new_ingredient = Ingredient.find_or_create_by(name: ingredient_string.downcase)
+    if self.ingredients.include?(new_ingredient)
+      puts "This ingredient is already in your inventory."
     else
-      puts "error in add item"
+      self.ingredients << new_ingredient
+      puts "Added #{new_ingredient} to your inventory."
+    end
+  end
+
+  def add_cocktail(cocktail_string)
+    new_cocktail = Cocktail.find_by(name: cocktail_string.downcase)
+    if self.cocktails.include?(new_cocktail)
+      puts "This cocktail has already been added to your favorites."
+    elsif new_cocktail
+      self.cocktails << new_cocktail
+      puts "Added #{new_cocktail} to your favorites."
+    else
+      puts "We didn't find that cocktail."
     end
   end
 
@@ -43,6 +41,5 @@ class User < ActiveRecord::Base
       puts "You havent saved any #{type} yet."
     end
   end
-
 
 end

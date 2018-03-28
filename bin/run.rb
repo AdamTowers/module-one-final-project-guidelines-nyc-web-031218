@@ -18,10 +18,16 @@ def run
   puts "Welcome to your personal bar."
   puts "Please input your name:"
   name_response = gets.chomp.downcase
-  current_user = User.find_or_create_by(name: name_response)
-  puts "Welcome, #{current_user.name.capitalize}"
-
   input = ""
+
+  if name_response == "exit"
+    puts "Goodbye"
+    input = nil
+  else
+    current_user = User.find_or_create_by(name: name_response)
+    puts "Welcome, #{current_user.name.capitalize}"
+  end
+
   while input
     main_menu
     input = gets.chomp.downcase
@@ -32,16 +38,14 @@ def run
     when 'add ingredient'
       puts 'Please enter the name of the ingredient you would like to save.'
       input = gets.chomp.downcase
-      current_user.add_item(input, "ingredient")
-      puts "Added #{input} to your inventory."
+      current_user.add_ingredient(input)
     when 'favorites'
       puts "Your currently saved cocktails are: "
       current_user.get_item_names("cocktails")
     when 'add cocktail'
       puts 'Please enter the name of the cocktail you would like to save.'
       input = gets.chomp.downcase
-      current_user.add_item(input, "cocktail")
-      puts "Added #{input} to your favorites."
+      current_user.add_cocktail(input)
     when 'my options'
       #etc
     when 'exit'
