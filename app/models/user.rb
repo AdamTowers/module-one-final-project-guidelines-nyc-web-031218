@@ -42,4 +42,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  def get_possible_drinks
+   drinks =self.ingredients.collect do |ingredient|
+      ingredient.cocktails.collect do |cocktail|
+        cocktail.name
+      end
+    end
+    drinks.flatten.uniq.sort
+  end
+
 end

@@ -47,7 +47,7 @@ def run
       input = gets.chomp.downcase
       current_user.add_cocktail(input)
     when 'my options'
-      #etc
+      puts current_user.get_possible_drinks
     when 'exit'
       puts "Goodbye"
       break
