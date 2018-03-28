@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
       puts "This ingredient is already in your inventory."
     else
       self.ingredients << new_ingredient
-      puts "Added #{new_ingredient} to your inventory."
+      puts "Added #{new_ingredient.name} to your inventory."
     end
   end
 
@@ -49,6 +49,16 @@ class User < ActiveRecord::Base
       end
     end
     drinks.flatten.uniq.sort
+  end
+
+  def delete_ingredient(ingredient_to_delete)
+    selected_ingredient = self.ingredients.find_by(name: ingredient_to_delete)
+    if self.ingredients.include?(selected_ingredient)
+      self.ingredients.destroy(selected_ingredient)
+      puts "You've deleted #{ingredient_to_delete} from your inventory."
+    else
+      puts "You don't have #{ingredient_to_delete} in your inventory."
+    end
   end
 
 end
