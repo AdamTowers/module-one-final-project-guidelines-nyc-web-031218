@@ -2,8 +2,6 @@ require_relative '../config/environment'
 
 def main_menu
   puts "Please enter one of the following commands"
-  # puts "- All ingredients : display all ingredients"
-  # puts "- All cocktails : display all cocktails"
   puts "- Inventory : display all your currently saved ingredients"
   puts "- Add Ingredient : saves an ingredient to your inventory"
   puts "- Favorites : display all your currently saved cocktails"
@@ -26,7 +24,7 @@ def run
     input = nil
   else
     current_user = User.find_or_create_by(name: name_response)
-    puts "Welcome, #{current_user.name.capitalize}"
+    puts "Welcome, #{current_user.name.titleize}"
   end
 
   while input
@@ -53,8 +51,6 @@ def run
       puts "What cocktail would you like to look up?"
       searched_cocktail = gets.chomp.downcase
       Cocktail.get_info(searched_cocktail)
-      #insert lookup method here
-      # Cocktail.find_by(name: input)
     when 'exit'
       puts "Goodbye"
       break

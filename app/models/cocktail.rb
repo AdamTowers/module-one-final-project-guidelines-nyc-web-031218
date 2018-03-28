@@ -12,8 +12,9 @@ class Cocktail < ActiveRecord::Base
 
   def self.get_info(cocktail_name)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
-    puts searched_cocktail.name
-    puts searched_cocktail.instructions
+    puts "---"
+    puts "How to Make: #{searched_cocktail.name.titleize}"
+    puts "Ingredients:"
     searched_cocktail.cocktail_ingredients.each do |ci|
       if ci.amount.strip == "" || ci.amount == nil
         puts ci.ingredient.name
@@ -21,5 +22,8 @@ class Cocktail < ActiveRecord::Base
         puts "#{ci.amount}- #{ci.ingredient.name}"
       end
     end
+    puts "Instructions:"
+    puts searched_cocktail.instructions
+    puts "---"
   end
 end

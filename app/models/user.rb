@@ -29,9 +29,9 @@ class User < ActiveRecord::Base
 
   def get_item_names(type)
     if type == "ingredients"
-      items = self.ingredients.collect{|e| e.name.capitalize}
+      items = self.ingredients.collect{|e| e.name.titleize}
     elsif type == "cocktails"
-      items = self.cocktails.collect{|e| e.name.capitalize}
+      items = self.cocktails.collect{|e| e.name.titleize}
     else
       puts 'error with item names'
     end
