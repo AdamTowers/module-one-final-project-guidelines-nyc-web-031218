@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   def add_ingredient(ingredient_string)
     new_ingredient = Ingredient.find_or_create_by(name: ingredient_string.downcase)
     if self.ingredients.include?(new_ingredient)
-      puts "This ingredient is already in your inventory.".red
+      puts "This ingredient is already in your inventory.".white.on_red
     else
       self.ingredients << new_ingredient
       puts "Added #{new_ingredient.name} to your inventory.".green
@@ -18,12 +18,12 @@ class User < ActiveRecord::Base
   def add_cocktail(cocktail_string)
     new_cocktail = Cocktail.find_by(name: cocktail_string.downcase)
     if self.cocktails.include?(new_cocktail)
-      puts "This cocktail has already been added to your favorites.".red
+      puts "This cocktail has already been added to your favorites.".white.on_red
     elsif new_cocktail
       self.cocktails << new_cocktail
       puts "Added #{new_cocktail} to your favorites.".green
     else
-      puts "We didn't find that cocktail.".red
+      puts "We didn't find that cocktail.".white.on_red
     end
   end
 

@@ -43,7 +43,7 @@ class Cocktail < ActiveRecord::Base
   def self.create_cocktail(cocktail_name)
     new_cocktail = Cocktail.create(name: cocktail_name)
     puts "Please enter all the ingredients, seperated by commas.".green
-    puts "(Example: Vodka, Orange Juice, Ice)"
+    puts "(Example: Vodka, Orange Juice, Ice)".green
     new_ingredients = gets.chomp.downcase.split(/\s*,\s*/)
     new_ingredients.each do |i|
       current = Ingredient.find_or_create_by(name: i)
