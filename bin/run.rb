@@ -8,6 +8,7 @@ def main_menu
   puts "- Add Cocktail : saves a cocktail to your favorites"
   puts "- My Options : displays cocktails possible with your inventory"
   puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
+  puts "– Create Cocktail : share a new cocktail recipe"
   puts "- Exit : quit this program"
 end
 
@@ -51,6 +52,14 @@ def run
       puts "What cocktail would you like to look up?"
       searched_cocktail = gets.chomp.downcase
       Cocktail.get_info(searched_cocktail)
+    when 'create cocktail'
+      puts "Please input the name of the cocktail you'd like to create:"
+      input = gets.chomp.downcase
+      if Cocktail.get_names.include?(input)
+        puts "I'm sorry, a cocktail already exists with that name"
+      else
+        Cocktail.create_cocktail(input)
+      end
     when 'exit'
       puts "Goodbye"
       break
