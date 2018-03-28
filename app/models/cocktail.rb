@@ -17,15 +17,15 @@ class Cocktail < ActiveRecord::Base
     if rating_total > 0
       average = rating_total / self.user_cocktails.size
     else
-      puts "No ratings yet."
+      puts "No ratings yet.".red
     end
   end
 
   def self.get_info(cocktail_name)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
     puts "---"
-    puts "#{searched_cocktail.name.titleize}"
-    puts "Ingredients:"
+    puts "#{searched_cocktail.name.titleize}".white.on_blue
+    puts "Ingredients:".blue
     searched_cocktail.cocktail_ingredients.each do |ci|
       if ci.amount == nil || ci.amount.strip == ""
         puts ci.ingredient.name
@@ -33,16 +33,16 @@ class Cocktail < ActiveRecord::Base
         puts "#{ci.amount.strip} - #{ci.ingredient.name}"
       end
     end
-    puts "Instructions:"
+    puts "Instructions:".blue
     puts searched_cocktail.instructions
-    puts "Rating:"
+    puts "Rating:".blue
     puts searched_cocktail.find_rating
     puts "---"
   end
 
   def self.create_cocktail(cocktail_name)
     new_cocktail = Cocktail.create(name: cocktail_name)
-    puts "Please enter all the ingredients, seperated by commas."
+    puts "Please enter all the ingredients, seperated by commas.".green
     puts "(Example: Vodka, Orange Juice, Ice)"
     new_ingredients = gets.chomp.downcase.split(/\s*,\s*/)
     new_ingredients.each do |i|
@@ -50,13 +50,13 @@ class Cocktail < ActiveRecord::Base
       new_cocktail.ingredients << current
     end
     new_cocktail.cocktail_ingredients.each do |ci|
-      puts "Please enter the amount for #{ci.ingredient.name}"
+      puts "Please enter the amount for #{ci.ingredient.name}".green
       ci.amount = gets.chomp.downcase
       ci.save
     end
-    puts "Please enter the cocktail instructions:"
+    puts "Please enter the cocktail instructions:".green
     new_cocktail.instructions = gets.chomp
     new_cocktail.save
-    puts "Your cocktail has been added!"
+    puts "Your cocktail has been added!".green
   end
 end
