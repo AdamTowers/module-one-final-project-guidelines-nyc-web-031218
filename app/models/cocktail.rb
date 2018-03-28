@@ -10,10 +10,21 @@ class Cocktail < ActiveRecord::Base
     end.sort
   end
 
+  def find_rating
+    rating_total = self.user_cocktails.reduce(0) do |sum, element|
+      sum + element if element
+    end
+    if rating_total > 0
+      average = rating_total / self.user_cocktails.size
+    else
+      puts "No ratings yet."
+    end
+  end
+
   def self.get_info(cocktail_name)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
     puts "---"
-    puts "How to Make: #{searched_cocktail.name.titleize}"
+    puts "#{searched_cocktail.name.titleize}"
     puts "Ingredients:"
     searched_cocktail.cocktail_ingredients.each do |ci|
       if ci.amount == nil || ci.amount.strip == ""
@@ -24,6 +35,8 @@ class Cocktail < ActiveRecord::Base
     end
     puts "Instructions:"
     puts searched_cocktail.instructions
+    puts "Rating:"
+    puts searched_cocktail.find_rating
     puts "---"
   end
 
@@ -46,5 +59,4 @@ class Cocktail < ActiveRecord::Base
     new_cocktail.save
     puts "Your cocktail has been added!"
   end
-
 end
