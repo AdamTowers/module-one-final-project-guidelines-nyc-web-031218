@@ -34,14 +34,11 @@ class Cocktail < ActiveRecord::Base
     end
   end
 
-
-
   def self.get_names
     self.all.collect do |cocktail|
       cocktail.name
     end.sort
   end
-
 
   #won't work right now because we dont have a way to access rating
   def find_rating
@@ -97,4 +94,5 @@ class Cocktail < ActiveRecord::Base
     new_cocktail.save
     puts "Your cocktail has been added!".green
   end
+
 end

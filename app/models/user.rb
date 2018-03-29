@@ -43,15 +43,6 @@ class User < ActiveRecord::Base
   end
 
   def get_possible_drinks
-   # drinks =self.ingredients.collect do |ingredient|
-   #    ingredient.cocktails.collect do |cocktail|
-   #      cocktail.name
-   #    end
-   #  end
-   #  drinks = drinks.flatten.uniq.sort
-
-
-
     drinks = []
     self.ingredients.each do |ingredient|
       ingredient.cocktails.each do |cocktail|
