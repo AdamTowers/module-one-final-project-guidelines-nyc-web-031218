@@ -18,6 +18,7 @@ def main_menu
   puts "- Cocktail Roulette : display ingredients and instrutions for a random cocktail"
   puts "– Create Cocktail : share a new cocktail recipe"
   puts "– Review Cocktail : submit review for specific cocktail"
+  puts "Update Cocktail:".yellow + " change details about a specific cocktail"
   puts "- Exit : quit this program".red
 end
 
@@ -178,6 +179,19 @@ def run
       else
         puts "You did not enter a valid rating.".white.on_red
       end
+
+    when 'update cocktail'
+      system "clear"
+      puts "Which cocktail would you like to update?".yellow
+      query = gets.chomp.downcase
+      cocktail = Cocktail.find_by(name: query)
+      if cocktail
+        cocktail.update_cocktail
+      else
+        puts "We did not find a cocktail with that name.".white.on_red
+      end
+      puts "==================="
+      puts
 
     when 'exit'
       puts "Goodbye".white.on_blue

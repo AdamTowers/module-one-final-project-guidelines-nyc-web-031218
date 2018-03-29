@@ -7,20 +7,31 @@ class Cocktail < ActiveRecord::Base
   def update_cocktail
     input = ""
     while (input)
-      puts "You are now editing the cocktail #{self.name}"
-      puts "What would you like to change?"
-      puts "You can type: name, ingredients, instructions"
-      puts "When you are finished, type exit"
+      puts "You are now editing the cocktail #{self.name.titleize}".yellow
+      puts "What would you like to change?".yellow
+      puts "You can type: name, ingredients, instructions".yellow
+      puts "When you are finished, type exit".yellow
       input = gets.chomp.downcase
       case input
       when "name"
-        puts "Current name is: #{self.name}"
-        puts "What would you like to change this to?"
+        puts "Current name is: #{self.name.titleize}".yellow
+        puts "What would you like to change this to?".yellow
         self.update(name: gets.chomp.downcase)
       when "ingredients"
+        self.cocktail_ingredients.clear
+        binding.pry
         puts "Please enter all the ingredients for this recipe, seperated by commas.".yellow
-        puts "(Ex: bananas, vodka, pineapple juice, ice)"
-        self.ingredients.each {|e| e.destroy}
+        puts "(Ex: bananas, vodka, pineapple juice, ice)".yellow
+        new_ingredients = gets.chomp.downcase.split(/\s*,\s*/)
+        new_ingredients.each do |i|
+          current = Ingredient.find_or_create_by(name: i)
+          self.ingredients << current
+        end
+        self.cocktail_ingredients.each do |ci|
+          puts "Please enter the amount for #{ci.ingredient.name}".yellow
+          ci.update(amount: gets.chomp.downcase)
+        end
+
       when "instructions"
         puts "The instructions for #{self.name} are as follows"
         puts self.instructions
@@ -91,8 +102,7 @@ class Cocktail < ActiveRecord::Base
     end
     new_cocktail.cocktail_ingredients.each do |ci|
       puts "Please enter the amount for #{ci.ingredient.name}".yellow
-      ci.amount = gets.chomp.downcase
-      ci.save
+      ci.update(amount: gets.chomp.downcase)
     end
     puts "Please enter the cocktail instructions:".yellow
     new_cocktail.instructions = gets.chomp
