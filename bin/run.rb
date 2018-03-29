@@ -16,6 +16,7 @@ def main_menu
   puts "- My Options : displays cocktails possible with your inventory"
   puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
   puts "– Create Cocktail : share a new cocktail recipe"
+  puts "– Review Cocktail : submit review for specific cocktail"
   puts "- Exit : quit this program".red
 end
 
@@ -154,6 +155,19 @@ def run
       end
       puts "==================="
       puts
+
+    when 'review cocktail'
+      system "clear"
+      puts "What cocktail would you like to review?".yellow
+      cocktail_name = gets.chomp.downcase
+      puts "What rating would you like to give it (1-10)?"
+      user_rating = gets.chomp
+      if user_rating.to_i.to_s == user_rating && (1..10).include?(user_rating.to_i)
+        current_user.give_rating(cocktail_name, user_rating)
+      else
+        puts "You did not enter a valid rating.".white.on_red
+      end
+
     when 'exit'
       puts "Goodbye".white.on_blue
       puts "==================="

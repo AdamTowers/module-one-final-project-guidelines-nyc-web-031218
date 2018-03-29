@@ -68,7 +68,8 @@ class User < ActiveRecord::Base
   def give_rating(cocktail, user_rating)
     cocktail_object = Cocktail.find_by(name: cocktail)
     if cocktail_object
-      UserCocktail.create(user_id: self.id, cocktail_id: cocktail_object.id, rating: user_rating)
+      cocktail_to_review = UserCocktail.find_or_create_by(user_id: self.id, cocktail_id: cocktail_object.id)
+      cocktail_to_review.update(rating: user_rating)
     else
       puts "Cocktail not found.".white.on_red
     end

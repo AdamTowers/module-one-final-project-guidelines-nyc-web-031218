@@ -45,10 +45,10 @@ class Cocktail < ActiveRecord::Base
       puts "No ratings yet.".red
     else
       rating_total = self.user_cocktails.reduce(0) do |sum, element|
-        sum + element.rating if element.rating
+        element.rating ? sum + element.rating : sum
       end
       if rating_total
-        average = rating_total / self.user_cocktails.size
+        average = rating_total / self.user_cocktails.count(:rating)
       else
         puts "No ratings yet.".red
       end
