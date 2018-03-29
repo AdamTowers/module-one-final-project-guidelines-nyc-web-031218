@@ -67,16 +67,19 @@ def run
       system "clear"
       results = current_user.get_possible_drinks
       results.each do |sub_array|
-        string = "#{sub_array[0].titleize}: #{sub_array[1]}/#{sub_array[2]} ingredients available."
+        string1 = "#{sub_array[0].titleize}"
+        string2 = ": You have #{sub_array[1]}/#{sub_array[2]} ingredients."
         #changes the colors of results depending on percentage of available ingredients
         if sub_array[1] == sub_array[2]
-          puts string.light_blue
+          puts string1 + string2.green
         elsif sub_array[1].to_f/sub_array[2] >= 0.5
-          puts string.light_green
+          puts string1 + string2.yellow
         else
-          puts string.magenta
+          puts string1 + string2.light_red
         end
       end
+      puts "==================="
+      puts
 
     when 'search cocktail'
       system "clear"
@@ -97,7 +100,7 @@ def run
     when 'exit'
       puts "Goodbye".white.on_blue
       break
-      
+
     else
       system "clear"
       puts "I'm sorry, that was not a valid command.".white.on_red

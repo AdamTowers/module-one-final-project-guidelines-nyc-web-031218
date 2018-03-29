@@ -42,6 +42,7 @@ class Cocktail < ActiveRecord::Base
 
   #won't work right now because we dont have a way to access rating
   def find_rating
+    binding.pry
     rating_total = self.user_cocktails.rating.reduce(0) do |sum, element|
       sum + element if element
     end
