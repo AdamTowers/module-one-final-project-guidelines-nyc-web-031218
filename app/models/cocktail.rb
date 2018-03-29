@@ -72,7 +72,6 @@ class Cocktail < ActiveRecord::Base
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
       if searched_cocktail
       puts "==================="
-      puts
       puts "#{searched_cocktail.name.titleize}".white.on_blue
       puts "Ingredients:".blue
       searched_cocktail.cocktail_ingredients.each do |ci|
