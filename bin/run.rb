@@ -61,11 +61,12 @@ def run
         system "clear"
         puts "Sorry, that username already exists.".white.on_red
       else
-        puts "Please enter your name"
+        puts "Please enter your name".yellow
         new_users_name =  gets.chomp
         current_user = User.create(username: username_request, name: new_users_name)
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
         puts "==================="
+        break
       end
 
     else
@@ -169,10 +170,11 @@ def run
       system "clear"
       puts "What cocktail would you like to review?".yellow
       cocktail_name = gets.chomp.downcase
-      puts "What rating would you like to give it (1-10)?"
+      puts "What rating would you like to give it (1-10)?".yellow
       user_rating = gets.chomp
       if user_rating.to_i.to_s == user_rating && (1..10).include?(user_rating.to_i)
         current_user.give_rating(cocktail_name, user_rating)
+        puts "Thank you for your review.".white.on_green
       else
         puts "You did not enter a valid rating.".white.on_red
       end
