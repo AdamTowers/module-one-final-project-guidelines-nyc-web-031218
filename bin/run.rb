@@ -1,5 +1,11 @@
 require_relative '../config/environment'
 
+def login
+  puts "Please enter one of the following commands:".yellow
+  puts "- Login : login with your existing username"
+  puts "- Create Account : create a new user account"
+end
+
 def main_menu
   puts "Please enter one of the following commands:".yellow
   puts "- Inventory : display all your currently saved ingredients"
@@ -17,20 +23,61 @@ def run
   system "clear"
   puts cocktail_art.magenta.blink
   puts "Welcome to your personal bar.".white.on_blue
-  puts "Please input your name:".yellow
-  name_response = gets.chomp.downcase
+  response = ""
   input = ""
+  # puts cocktail_art.magenta.blink
+  # puts "Welcome to your personal bar.".white.on_blue
+  # puts "Please enter one of the following commands:".yellow
+  # puts "- Login : login with your existing username"
+  # puts "- Create Account : create a new user account"
 
-  if name_response == "exit"
-    puts "Goodbye".white.on_blue
-    input = nil
-    puts "==================="
-    puts
-  else
-    current_user = User.find_or_create_by(name: name_response)
-    puts "Welcome, #{current_user.name.titleize}".white.on_blue
-    puts "==================="
-    puts
+  while response
+    login
+    response = gets.chomp.downcase
+    case response
+
+    when "exit"
+      puts "Goodbye".white.on_blue
+      input = nil
+      puts "==================="
+      puts
+      break
+
+    when "login"
+      puts "Please enter your username:".yellow
+      username_input = gets.chomp
+      current_user = User.find_by(username: username_input)
+      if current_user
+        puts "Welcome, #{current_user.name.titleize}".white.on_blue
+        puts "==================="
+        puts
+        break
+      else
+        system "clear"
+        puts "Sorry, that username doesn't exist.".white.on_red
+      end
+
+    when "create account"
+      puts "Please enter your desired username:".yellow
+      username_request = gets.chomp
+      if User.find_by(username: username_request)
+        system "clear"
+        puts "Sorry, that username already exists.".white.on_red
+      else
+        puts "Please enter your name"
+        new_users_name =  gets.chomp
+        current_user = User.create(username: username_request, name: new_users_name)
+        puts "Welcome, #{current_user.name.titleize}".white.on_blue
+        puts "==================="
+      end
+
+    else
+      system "clear"
+      puts "I'm sorry, that was not a valid command.".white.on_red
+      puts "==================="
+      puts
+
+    end
   end
 
   while input
