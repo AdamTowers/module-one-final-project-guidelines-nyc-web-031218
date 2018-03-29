@@ -42,14 +42,17 @@ class Cocktail < ActiveRecord::Base
 
   #won't work right now because we dont have a way to access rating
   def find_rating
-    binding.pry
-    rating_total = self.user_cocktails.rating.reduce(0) do |sum, element|
-      sum + element if element
-    end
-    if rating_total > 0
-      average = rating_total / self.user_cocktails.size
+    if self.user_cocktails == []
+      puts "No users have rated this cocktail yet."
     else
-      puts "No ratings yet.".red
+      rating_total = self.user_cocktails.reduce(0) do |sum, element|
+        sum + element.rating if element.rating
+      end
+      if rating_total
+        average = rating_total / self.user_cocktails.size
+      else
+        puts "No ratings yet.".red
+      end
     end
   end
 
