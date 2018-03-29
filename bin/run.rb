@@ -59,7 +59,18 @@ def run
       current_user.add_cocktail(input)
     when 'my options'
       system "clear"
-      puts current_user.get_possible_drinks
+      results = current_user.get_possible_drinks
+      results.each do |sub_array|
+        string = "#{sub_array[0].titleize}: #{sub_array[1]}/#{sub_array[2]} ingredients available."
+        #changes the colors of results depending on percentage of available ingredients
+        if sub_array[1] == sub_array[2]
+          puts string.light_blue
+        elsif sub_array[1].to_f/sub_array[2] >= 0.5
+          puts string.light_green
+        else
+          puts string.magenta
+        end
+      end
     when 'search cocktail'
       system "clear"
       puts "What cocktail would you like to look up?".green

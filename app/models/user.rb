@@ -43,12 +43,25 @@ class User < ActiveRecord::Base
   end
 
   def get_possible_drinks
-   drinks =self.ingredients.collect do |ingredient|
-      ingredient.cocktails.collect do |cocktail|
-        cocktail.name
+   # drinks =self.ingredients.collect do |ingredient|
+   #    ingredient.cocktails.collect do |cocktail|
+   #      cocktail.name
+   #    end
+   #  end
+   #  drinks = drinks.flatten.uniq.sort
+
+
+
+    drinks = []
+    self.ingredients.each do |ingredient|
+      ingredient.cocktails.each do |cocktail|
+        ct_name = cocktail.name
+        user_ingredient_count = (self.ingredients & cocktail.ingredients).length
+        ingredient_count = cocktail.ingredients.length
+        drinks << [ct_name, user_ingredient_count, ingredient_count]
       end
     end
-    drinks.flatten.uniq.sort
+    drinks = drinks.uniq.sort{|a,b| a[1].to_f/a[2] <=> b[1].to_f/b[2]}
   end
 
   def delete_ingredient(ingredient_to_delete)
