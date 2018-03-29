@@ -42,8 +42,10 @@ class Cocktail < ActiveRecord::Base
     end.sort
   end
 
+
+  #won't work right now because we dont have a way to access rating
   def find_rating
-    rating_total = self.user_cocktails.reduce(0) do |sum, element|
+    rating_total = self.user_cocktails.rating.reduce(0) do |sum, element|
       sum + element if element
     end
     if rating_total > 0
@@ -55,21 +57,25 @@ class Cocktail < ActiveRecord::Base
 
   def self.get_info(cocktail_name)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
-    puts "---"
-    puts "#{searched_cocktail.name.titleize}".white.on_blue
-    puts "Ingredients:".blue
-    searched_cocktail.cocktail_ingredients.each do |ci|
-      if ci.amount == nil || ci.amount.strip == ""
-        puts ci.ingredient.name
-      else
-        puts "#{ci.amount.strip} - #{ci.ingredient.name}"
+      if searched_cocktail
+      puts "---"
+      puts "#{searched_cocktail.name.titleize}".white.on_blue
+      puts "Ingredients:".blue
+      searched_cocktail.cocktail_ingredients.each do |ci|
+        if ci.amount == nil || ci.amount.strip == ""
+          puts ci.ingredient.name
+        else
+          puts "#{ci.amount.strip} - #{ci.ingredient.name}"
+        end
       end
+      puts "Instructions:".blue
+      puts searched_cocktail.instructions
+      puts "Rating:".blue
+      puts searched_cocktail.find_rating
+      puts "---"
+    else
+      puts "I'm sorry, we didn't find a cocktail with the name: #{cocktail_name}".white.on_red
     end
-    puts "Instructions:".blue
-    puts searched_cocktail.instructions
-    puts "Rating:".blue
-    puts searched_cocktail.find_rating
-    puts "---"
   end
 
   def self.create_cocktail(cocktail_name)
