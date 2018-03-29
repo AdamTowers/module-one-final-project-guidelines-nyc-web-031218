@@ -24,6 +24,7 @@ def main_menu
 end
 
 def run
+  prompt = TTY::Prompt.new
   system "clear"
   puts cocktail_art.blue.blink
   puts "Welcome to your personal bar.".white.on_blue
@@ -43,8 +44,7 @@ def run
       break
 
     when "login"
-      puts "Please enter your username:".yellow
-      username_input = gets.chomp
+      username_input = prompt.ask("Please enter your username:".yellow, required: true)
       current_user = User.find_by(username: username_input)
       if current_user
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
@@ -56,14 +56,16 @@ def run
       end
 
     when "create account"
-      puts "Please enter your desired username:".yellow
-      username_request = gets.chomp
+      # puts "Please enter your desired username:".yellow
+      # username_request = gets.chomp
+      username_request = prompt.ask("Please enter your desire username:".yellow, required: true)
       if User.find_by(username: username_request)
         system "clear"
         puts "Sorry, that username already exists.".white.on_red
       else
-        puts "Please enter your name".yellow
-        new_users_name =  gets.chomp
+        # puts "Please enter your name".yellow
+        # new_users_name =  gets.chomp
+        new_users_name = prompt.ask("Please enter your name".yellow, required: true)
         current_user = User.create(username: username_request, name: new_users_name)
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
         puts "==================="
