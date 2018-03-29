@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
       puts "This ingredient is already in your inventory.".white.on_red
     else
       self.ingredients << new_ingredient
-      puts "Added #{new_ingredient.name} to your inventory.".green
+      puts "Added #{new_ingredient.name} to your inventory.".white.on_green
     end
   end
 
@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
       puts "This cocktail has already been added to your favorites.".white.on_red
     elsif new_cocktail
       self.cocktails << new_cocktail
-      puts "Added #{new_cocktail.name} to your favorites.".green
+      puts "Added #{new_cocktail.name} to your favorites.".white.on_green
     else
       puts "We didn't find that cocktail.".white.on_red
     end
@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
     if items.size > 0
       puts items
     else
-      puts "You havent saved any #{type} yet.".red
+      puts "You havent saved any #{type} yet.".white.on_red
     end
   end
 
@@ -59,9 +59,9 @@ class User < ActiveRecord::Base
     selected_ingredient = self.ingredients.find_by(name: ingredient_to_delete)
     if self.ingredients.include?(selected_ingredient)
       self.ingredients.destroy(selected_ingredient)
-      puts "You've deleted #{ingredient_to_delete} from your inventory.".green
+      puts "You've deleted #{ingredient_to_delete} from your inventory.".white.on_green
     else
-      puts "You don't have #{ingredient_to_delete} in your inventory.".green
+      puts "You don't have #{ingredient_to_delete} in your inventory.".white.on_red
     end
   end
 

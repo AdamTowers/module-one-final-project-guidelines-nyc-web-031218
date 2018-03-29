@@ -1,7 +1,7 @@
 require_relative '../config/environment'
 
 def main_menu
-  puts "Please enter one of the following commands".green
+  puts "Please enter one of the following commands:".yellow
   puts "- Inventory : display all your currently saved ingredients"
   puts "- Add Ingredient : saves an ingredient to your inventory"
   puts "– Delete Ingredient : delete ingredient from your inventory"
@@ -17,16 +17,20 @@ def run
   system "clear"
   puts cocktail_art.magenta.blink
   puts "Welcome to your personal bar.".white.on_blue
-  puts "Please input your name:".green
+  puts "Please input your name:".yellow
   name_response = gets.chomp.downcase
   input = ""
 
   if name_response == "exit"
-    puts "Goodbye".green
+    puts "Goodbye".white.on_blue
     input = nil
+    puts "==================="
+    puts
   else
     current_user = User.find_or_create_by(name: name_response)
     puts "Welcome, #{current_user.name.titleize}".white.on_blue
+    puts "==================="
+    puts
   end
 
   while input
@@ -38,28 +42,36 @@ def run
       system "clear"
       puts "Your current inventory includes: ".white.on_blue
       current_user.get_item_names("ingredients")
+      puts "==================="
+      puts
 
     when 'add ingredient'
       system "clear"
-      puts "Please enter the name of the ingredient you would like to save:".green
+      puts "Please enter the name of the ingredient you would like to save:".yellow
       input = gets.chomp.downcase
       current_user.add_ingredient(input)
+      puts "==================="
+      puts
 
     when 'delete ingredient'
       system "clear"
-      puts "Please enter the name of the ingredient you would like to delete:".green
+      puts "Please enter the name of the ingredient you would like to delete:".yellow
       selected_ingredient = gets.chomp.downcase
       current_user.delete_ingredient(selected_ingredient)
       puts ""
+      puts "==================="
+      puts
 
     when 'favorites'
       system "clear"
       puts "Your currently saved cocktails are: ".white.on_blue
       current_user.get_item_names("cocktails")
+      puts "==================="
+      puts
 
     when 'add cocktail'
       system "clear"
-      puts "Please enter the name of the cocktail you would like to save:".green
+      puts "Please enter the name of the cocktail you would like to save:".yellow
       input = gets.chomp.downcase
       current_user.add_cocktail(input)
 
@@ -67,8 +79,8 @@ def run
       system "clear"
       results = current_user.get_possible_drinks
       results.each do |sub_array|
-        string1 = "#{sub_array[0].titleize}"
-        string2 = ": You have #{sub_array[1]}/#{sub_array[2]} ingredients."
+        string1 = "#{sub_array[0].titleize}: "
+        string2 = "You have #{sub_array[1]}/#{sub_array[2]} ingredients."
         #changes the colors of results depending on percentage of available ingredients
         if sub_array[1] == sub_array[2]
           puts string1 + string2.green
@@ -83,27 +95,34 @@ def run
 
     when 'search cocktail'
       system "clear"
-      puts "What cocktail would you like to look up?".green
+      puts "What cocktail would you like to look up?".yellow
       searched_cocktail = gets.chomp.downcase
       Cocktail.get_info(searched_cocktail)
+      puts "==================="
+      puts
 
     when 'create cocktail'
       system "clear"
-      puts "Please input the name of the cocktail you'd like to create:".green
+      puts "Please input the name of the cocktail you'd like to create:".yellow
       input = gets.chomp.downcase
       if Cocktail.get_names.include?(input)
         puts "I'm sorry, a cocktail already exists with that name".white.on_red
       else
         Cocktail.create_cocktail(input)
       end
-
+      puts "==================="
+      puts
     when 'exit'
       puts "Goodbye".white.on_blue
+      puts "==================="
+      puts
       break
 
     else
       system "clear"
       puts "I'm sorry, that was not a valid command.".white.on_red
+      puts "==================="
+      puts
     end
 
   end

@@ -29,7 +29,7 @@ class Cocktail < ActiveRecord::Base
         input = nil
       else
         system "clear"
-        puts "I'm sorry, that was not a correct command, please try again."
+        puts "I'm sorry, that was not a correct command, please try again.".white.on_red
       end
     end
   end
@@ -40,10 +40,9 @@ class Cocktail < ActiveRecord::Base
     end.sort
   end
 
-  #won't work right now because we dont have a way to access rating
   def find_rating
     if self.user_cocktails == []
-      puts "No users have rated this cocktail yet."
+      puts "No ratings yet.".red
     else
       rating_total = self.user_cocktails.reduce(0) do |sum, element|
         sum + element.rating if element.rating
@@ -59,7 +58,8 @@ class Cocktail < ActiveRecord::Base
   def self.get_info(cocktail_name)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
       if searched_cocktail
-      puts "---"
+      puts "==================="
+      puts
       puts "#{searched_cocktail.name.titleize}".white.on_blue
       puts "Ingredients:".blue
       searched_cocktail.cocktail_ingredients.each do |ci|
@@ -73,7 +73,6 @@ class Cocktail < ActiveRecord::Base
       puts searched_cocktail.instructions
       puts "Rating:".blue
       puts searched_cocktail.find_rating
-      puts "---"
     else
       puts "I'm sorry, we didn't find a cocktail with the name: #{cocktail_name}".white.on_red
     end
@@ -81,22 +80,22 @@ class Cocktail < ActiveRecord::Base
 
   def self.create_cocktail(cocktail_name)
     new_cocktail = Cocktail.create(name: cocktail_name)
-    puts "Please enter all the ingredients, seperated by commas.".green
-    puts "(Example: Vodka, Orange Juice, Ice)".green
+    puts "Please enter all the ingredients, seperated by commas.".yellow
+    puts "(Example: Vodka, Orange Juice, Ice)".yellow
     new_ingredients = gets.chomp.downcase.split(/\s*,\s*/)
     new_ingredients.each do |i|
       current = Ingredient.find_or_create_by(name: i)
       new_cocktail.ingredients << current
     end
     new_cocktail.cocktail_ingredients.each do |ci|
-      puts "Please enter the amount for #{ci.ingredient.name}".green
+      puts "Please enter the amount for #{ci.ingredient.name}".yellow
       ci.amount = gets.chomp.downcase
       ci.save
     end
-    puts "Please enter the cocktail instructions:".green
+    puts "Please enter the cocktail instructions:".yellow
     new_cocktail.instructions = gets.chomp
     new_cocktail.save
-    puts "Your cocktail has been added!".green
+    puts "Your cocktail has been added!".white.on_green
   end
 
 end
