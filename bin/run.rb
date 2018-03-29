@@ -8,20 +8,6 @@ end
 
 def main_menu
   puts "Please enter one of the following commands:".yellow
-<<<<<<< HEAD
-  puts "- Inventory : display all your currently saved ingredients"
-  puts "- Add Ingredient : saves an ingredient to your inventory"
-  puts "– Delete Ingredient : delete ingredient from your inventory"
-  puts "- Favorites : display all your currently saved cocktails"
-  puts "- Add Cocktail : saves a cocktail to your favorites"
-  puts "- My Options : displays cocktails possible with your inventory"
-  puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
-  puts "- Cocktail Roulette : display ingredients and instrutions for a random cocktail"
-  puts "– Create Cocktail : share a new cocktail recipe"
-  puts "– Review Cocktail : submit review for specific cocktail"
-  puts "Update Cocktail:".yellow + " change details about a specific cocktail"
-  puts "- Exit : quit this program".red
-=======
   puts "Inventory".yellow + ": display all your currently saved ingredients"
   puts "Favorites".yellow + ": display all your currently saved cocktails"
   puts "Options".yellow + ": displays cocktails possible with your inventory"
@@ -31,9 +17,9 @@ def main_menu
   puts "Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail"
   puts "Create Cocktail".yellow + ": share a new cocktail recipe"
   puts "Review Cocktail".yellow + ": submit review for specific cocktail"
+  puts "Update Cocktail".yellow + ": change details about a specific cocktail"
   puts "Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail"
   puts "Exit".red + ": quit this program"
->>>>>>> 0e06167da35925163da7b01f207a1f94f02f9cbf
 end
 
 def run
