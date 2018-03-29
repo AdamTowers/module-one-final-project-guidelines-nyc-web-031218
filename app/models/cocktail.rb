@@ -18,7 +18,9 @@ class Cocktail < ActiveRecord::Base
         puts "What would you like to change this to?"
         self.update(name: gets.chomp.downcase)
       when "ingredients"
-        puts "Adam I am too lazy to implement this."
+        puts "Please enter all the ingredients for this recipe, seperated by commas.".yellow
+        puts "(Ex: bananas, vodka, pineapple juice, ice)"
+        self.ingredients.each {|e| e.destroy}
       when "instructions"
         puts "The instructions for #{self.name} are as follows"
         puts self.instructions
