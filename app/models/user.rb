@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
       puts "This cocktail has already been added to your favorites.".white.on_red
     elsif new_cocktail
       self.cocktails << new_cocktail
-      puts "Added #{new_cocktail.name} to your favorites.".white.on_green
+      puts "Added #{new_cocktail.name.titleize} to your favorites.".white.on_green
     else
       puts "We didn't find that cocktail.".white.on_red
     end
