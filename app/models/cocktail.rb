@@ -50,7 +50,7 @@ class Cocktail < ActiveRecord::Base
         element.rating ? sum + element.rating : sum
       end
       if rating_total > 0
-        average = rating_total / self.user_cocktails.count(:rating)
+        average = rating_total.to_f / self.user_cocktails.count(:rating)
       else
         puts "No ratings yet.".red
       end
