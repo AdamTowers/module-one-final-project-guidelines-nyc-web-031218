@@ -2,28 +2,28 @@ require_relative '../config/environment'
 
 def login
   puts "Please enter one of the following commands:".yellow
-  puts "- Login : login with your existing username"
-  puts "- Create Account : create a new user account"
+  puts "Login".yellow + ": login with your existing username"
+  puts "Create Account".yellow + ": create a new user account"
 end
 
 def main_menu
   puts "Please enter one of the following commands:".yellow
-  puts "- Inventory : display all your currently saved ingredients"
-  puts "- Add Ingredient : saves an ingredient to your inventory"
-  puts "– Delete Ingredient : delete ingredient from your inventory"
-  puts "- Favorites : display all your currently saved cocktails"
-  puts "- Add Cocktail : saves a cocktail to your favorites"
-  puts "- My Options : displays cocktails possible with your inventory"
-  puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
-  puts "- Cocktail Roulette : display ingredients and instrutions for a random cocktail"
-  puts "– Create Cocktail : share a new cocktail recipe"
-  puts "– Review Cocktail : submit review for specific cocktail"
-  puts "- Exit : quit this program".red
+  puts "Inventory".yellow + ": display all your currently saved ingredients"
+  puts "Favorites".yellow + ": display all your currently saved cocktails"
+  puts "Options".yellow + ": displays cocktails possible with your inventory"
+  puts "Add Ingredient".yellow + ": saves an ingredient to your inventory"
+  puts "Delete Ingredient".yellow + ": delete ingredient from your inventory"
+  puts "Add Cocktail".yellow + ": saves a cocktail to your favorites"
+  puts "Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail"
+  puts "Create Cocktail".yellow + ": share a new cocktail recipe"
+  puts "Review Cocktail".yellow + ": submit review for specific cocktail"
+  puts "Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail"
+  puts "Exit".red + ": quit this program"
 end
 
 def run
   system "clear"
-  puts cocktail_art.magenta.blink
+  puts cocktail_art.blue.blink
   puts "Welcome to your personal bar.".white.on_blue
   response = ""
   input = ""
@@ -47,7 +47,6 @@ def run
       if current_user
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
         puts "==================="
-        puts
         break
       else
         system "clear"
@@ -73,8 +72,6 @@ def run
       system "clear"
       puts "I'm sorry, that was not a valid command.".white.on_red
       puts "==================="
-      puts
-
     end
   end
 
@@ -88,7 +85,6 @@ def run
       puts "Your current inventory includes: ".white.on_blue
       current_user.get_item_names("ingredients")
       puts "==================="
-      puts
 
     when 'add ingredient'
       system "clear"
@@ -96,7 +92,6 @@ def run
       input = gets.chomp.downcase
       current_user.add_ingredient(input)
       puts "==================="
-      puts
 
     when 'delete ingredient'
       system "clear"
@@ -105,14 +100,12 @@ def run
       current_user.delete_ingredient(selected_ingredient)
       puts ""
       puts "==================="
-      puts
 
     when 'favorites'
       system "clear"
       puts "Your currently saved cocktails are: ".white.on_blue
       current_user.get_item_names("cocktails")
       puts "==================="
-      puts
 
     when 'add cocktail'
       system "clear"
@@ -120,7 +113,7 @@ def run
       input = gets.chomp.downcase
       current_user.add_cocktail(input)
 
-    when 'my options'
+    when 'options'
       system "clear"
       results = current_user.get_possible_drinks
       results.each do |sub_array|
@@ -136,7 +129,6 @@ def run
         end
       end
       puts "==================="
-      puts
 
     when 'search cocktail'
       system "clear"
@@ -144,7 +136,6 @@ def run
       searched_cocktail = gets.chomp.downcase
       Cocktail.get_info(searched_cocktail)
       puts "==================="
-      puts
 
     when 'cocktail roulette'
       system 'clear'
@@ -152,7 +143,6 @@ def run
       random_cocktail = Cocktail.order("RANDOM()").first
       Cocktail.get_info(random_cocktail.name)
       puts "==================="
-      puts
 
     when 'create cocktail'
       system "clear"
@@ -164,7 +154,6 @@ def run
         Cocktail.create_cocktail(input)
       end
       puts "==================="
-      puts
 
     when 'review cocktail'
       system "clear"
@@ -182,14 +171,12 @@ def run
     when 'exit'
       puts "Goodbye".white.on_blue
       puts "==================="
-      puts
       break
 
     else
       system "clear"
       puts "I'm sorry, that was not a valid command.".white.on_red
       puts "==================="
-      puts
     end
 
   end
