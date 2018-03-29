@@ -84,7 +84,7 @@ def run
 
     when 'inventory'
       system "clear"
-      puts "Your current inventory includes: ".white.on_blue
+      puts "Your current inventory includes: ".white.on_blue if current_user.ingredients.length > 0
       current_user.get_item_names("ingredients")
       puts "==================="
 
@@ -95,8 +95,10 @@ def run
       current_user.add_ingredient(input)
       puts "==================="
 
-    when 'delete ingredient'
+    when 'remove ingredient'
       system "clear"
+      puts "The following items are currently in your inventory".yellow
+      current_user.get_item_names("ingredients")
       puts "Please enter the name of the ingredient you would like to delete:".yellow
       selected_ingredient = gets.chomp.downcase
       current_user.delete_ingredient(selected_ingredient)
@@ -105,7 +107,7 @@ def run
 
     when 'favorites'
       system "clear"
-      puts "Your currently saved cocktails are: ".white.on_blue
+      puts "Your currently saved cocktails are: ".white.on_blue if current_user.cocktails.length > 0
       current_user.get_item_names("cocktails")
       puts "==================="
 
@@ -114,6 +116,23 @@ def run
       puts "Please enter the name of the cocktail you would like to save:".yellow
       input = gets.chomp.downcase
       current_user.add_cocktail(input)
+
+    when 'remove cocktail'
+      system "clear"
+      puts "The following cocktails are currently on your favorites".yellow
+      current_user.get_item_names("cocktails")
+      puts "Please enter the name of the cocktail you would like to remove from your favorites.".yellow
+      response = gets.chomp.downcase
+      cocktail = Cocktail.find_by(name: response)
+      if response && current_user.cocktails.include?(cocktail)
+        current_user.cocktails.destroy(cocktail)
+        puts "#{cocktail.name.titleize} has been removed from your favorites".white.on_green
+      else
+        puts "We didn't that cocktail in your favorites".white.on_red
+      end
+      puts "==================="
+
+
 
     when 'options'
       system "clear"
