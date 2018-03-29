@@ -25,11 +25,6 @@ def run
   puts "Welcome to your personal bar.".white.on_blue
   response = ""
   input = ""
-  # puts cocktail_art.magenta.blink
-  # puts "Welcome to your personal bar.".white.on_blue
-  # puts "Please enter one of the following commands:".yellow
-  # puts "- Login : login with your existing username"
-  # puts "- Create Account : create a new user account"
 
   while response
     login
