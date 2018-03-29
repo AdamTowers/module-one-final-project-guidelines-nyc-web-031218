@@ -2,9 +2,11 @@
 
 Congratulations, you're are one of the first users to experience what will soon be the next big thing to disrupt Silicon Valley.
 
-We over at the Myxology offices truly believe that we are making the world a better place, through comprehensive search oriented CLI programming.
+We over at the <i>Myxology</i> offices truly believe that we are making the world a better place, through comprehensive search oriented CLI programming.
 
 ## Overview
+
+Ok, all jokes aside, <i>Myxology</i> is a CLI application created by two students at the Flatiron School in New York, NY. It helps you look up cocktail recipes and see relevant results based off of what ingredients you have available to you.
 
 ### Logging In
 
@@ -26,7 +28,7 @@ We over at the Myxology offices truly believe that we are making the world a bet
 We really enjoyed working on this project and may very well revisit it again in the future to further improve and expand on.
 
 ### Special thanks
-We'd like to thank the creator of TheCocktailDB, Zag, over at [thecocktaildb.com](https://www.thecocktaildb.com/), and for making the massive database of drinks available for free to students, like us, who are using the API for class projects.
+We'd like to thank the creators of TheCocktailDB, over at [thecocktaildb.com](https://www.thecocktaildb.com/), for making the massive database of drinks available for to students, like us.
 
 #### Created by:
 Manuel Grullon, manuel.grullon@flatironschool.com<br>
