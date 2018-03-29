@@ -15,6 +15,7 @@ def main_menu
   puts "- Add Cocktail : saves a cocktail to your favorites"
   puts "- My Options : displays cocktails possible with your inventory"
   puts "- Search Cocktail : display ingredients and instructions for a specific cocktail"
+  puts "- Cocktail Roulette : display ingredients and instrutions for a random cocktail"
   puts "– Create Cocktail : share a new cocktail recipe"
   puts "– Review Cocktail : submit review for specific cocktail"
   puts "- Exit : quit this program".red
@@ -141,6 +142,14 @@ def run
       puts "What cocktail would you like to look up?".yellow
       searched_cocktail = gets.chomp.downcase
       Cocktail.get_info(searched_cocktail)
+      puts "==================="
+      puts
+
+    when 'cocktail roulette'
+      system 'clear'
+      #randomizes the cocktails and grabs one element
+      random_cocktail = Cocktail.order("RANDOM()").first
+      Cocktail.get_info(random_cocktail.name)
       puts "==================="
       puts
 
