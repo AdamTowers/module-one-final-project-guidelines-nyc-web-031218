@@ -15,7 +15,7 @@ end
 
 def run
   system "clear"
-  puts cocktail_art
+  puts cocktail_art.magenta.blink
   puts "Welcome to your personal bar.".white.on_blue
   puts "Please input your name:".green
   name_response = gets.chomp.downcase
@@ -97,7 +97,7 @@ def run
 end
 
 def cocktail_art
-  puts <<-'EOF'
+  <<-'EOF'
    \
    .\"""""""""-.
    \`\-------'`/
