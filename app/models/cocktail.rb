@@ -77,11 +77,11 @@ class Cocktail < ActiveRecord::Base
       puts "Ingredients:".blue
       searched_cocktail.cocktail_ingredients.each do |ci|
         if ci.amount == nil || ci.amount.strip == ""
-          string = ci.ingredient.name
+          string = ci.ingredient.name.titleize
           string += " #{checkmark.force_encoding('utf-8')}" if user.ingredients.include?(ci.ingredient)
           puts string
         else
-          string = "#{ci.amount.strip} - #{ci.ingredient.name}"
+          string = "#{ci.amount.strip} - #{ci.ingredient.name.titleize}"
           string += " #{checkmark.force_encoding('utf-8')}" if user.ingredients.include?(ci.ingredient)
           puts string
         end
