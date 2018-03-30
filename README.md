@@ -2,7 +2,7 @@
 
 Congratulations, you're are one of the first users to experience what will soon be the next big thing to disrupt Silicon Valley.
 
-We over at the <i>Myxology</i> offices truly believe that we are making the world a better place, through comprehensive search oriented CLI programming.
+We over at the <i>Myxology</i> offices truly believe that we are making the world a better place, through comprehensive search-oriented CLI programming.
 
 ## Overview
 
@@ -30,6 +30,10 @@ Ok, all jokes aside, <i>Myxology</i> is a CLI application created by two student
 5. You are also able to create your own recipe by selecting `create cocktail`. When you're done, it will be added to our database for other users to interact with. Should you want to make changes to the cocktail you've created, select `update cocktail` which will ask you which part of the cocktail recipe you'd like to update.
 6. Should you want to review a cocktail, you can select `review cocktail` which you can rate on a scale of 1-10. Don't enter something other than one of those whole numbers, otherwise it will throw you an error!
 7. OMG we also have `cocktail roulette`, which will give you a random cocktail from our database.
+
+### Contributors Guide
+
+We are not taking contributions at this time.
 
 ### And that's it!
 We really enjoyed working on this project and may very well revisit it again in the future to further improve and expand on.
