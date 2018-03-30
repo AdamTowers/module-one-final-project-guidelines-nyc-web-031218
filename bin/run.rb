@@ -1,38 +1,42 @@
 require_relative '../config/environment'
 
 def login
-  puts "Please enter one of the following commands:".yellow
-  puts "Login".yellow + ": login with your existing username"
-  puts "Create Account".yellow + ": create a new user account"
+  {
+   ("Login".yellow + ": login with your existing username") => "login",
+   ("Create Account".yellow + ": create a new user account") => "create account",
+   ("Exit".red + ": quit this program") => "exit"
+  }
 end
 
 def main_menu
-  puts "Please enter one of the following commands:".yellow
-  puts "Inventory".yellow + ": display all your currently saved ingredients"
-  puts "Favorites".yellow + ": display all your currently saved cocktails"
-  puts "Options".yellow + ": display cocktails possible with your inventory"
-  puts "Add Ingredient".yellow + ": save an ingredient to your inventory"
-  puts "Remove Ingredient".yellow + ": remove ingredient from your inventory"
-  puts "Add Cocktail".yellow + ": save a cocktail to your favorites"
-  puts "Remove Cocktail".yellow + ": remove cocktail from your favorites"
-  puts "Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail"
-  puts "Create Cocktail".yellow + ": share a new cocktail recipe"
-  puts "Review Cocktail".yellow + ": submit review for specific cocktail"
-  puts "Update Cocktail".yellow + ": change details about a specific cocktail"
-  puts "Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail"
-  puts "Exit".red + ": quit this program"
+  {
+    ("Inventory".yellow + ": display all your currently saved ingredients") => "inventory",
+    ("Favorites".yellow + ": display all your currently saved cocktails") => "favorites",
+    ("Options".yellow + ": display cocktails possible with your inventory") => "options",
+    ("Add Ingredient".yellow + ": save an ingredient to your inventory") => "add ingredient",
+    ("Remove Ingredient".yellow + ": remove ingredient from your inventory") => "remove ingredient",
+    ("Add Cocktail".yellow + ": save a cocktail to your favorites") => "add cocktail",
+    ("Remove Cocktail".yellow + ": remove cocktail from your favorites") => "remove cocktail",
+    ("Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail") => "search cocktail",
+    ("Create Cocktail".yellow + ": share a new cocktail recipe") => "create cocktail",
+    ("Review Cocktail".yellow + ": submit review for specific cocktail") => "review cocktail",
+    ("Update Cocktail".yellow + ": change details about a specific cocktail") => "update cocktail",
+    ("Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail") => "cocktail roulette",
+    ("Exit".red + ": quit this program") => "exit"
+  }
 end
 
 def run
+  prompt = TTY::Prompt.new
   system "clear"
   puts cocktail_art.blue.blink
+  puts cocktail_art2.blue.blink
   puts "Welcome to your personal bar.".white.on_blue
   response = ""
   input = ""
 
   while response
-    login
-    response = gets.chomp.downcase
+    response = prompt.select("Please choose one of the following commands:".yellow , login, cycle: true)
     case response
 
     when "exit"
@@ -43,8 +47,7 @@ def run
       break
 
     when "login"
-      puts "Please enter your username:".yellow
-      username_input = gets.chomp
+      username_input = prompt.ask("Please enter your username:".yellow, required: true)
       current_user = User.find_by(username: username_input)
       if current_user
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
@@ -56,14 +59,12 @@ def run
       end
 
     when "create account"
-      puts "Please enter your desired username:".yellow
-      username_request = gets.chomp
+      username_request = prompt.ask("Please enter your desire username:".yellow, required: true)
       if User.find_by(username: username_request)
         system "clear"
         puts "Sorry, that username already exists.".white.on_red
       else
-        puts "Please enter your name".yellow
-        new_users_name =  gets.chomp
+        new_users_name = prompt.ask("Please enter your name".yellow, required: true)
         current_user = User.create(username: username_request, name: new_users_name)
         puts "Welcome, #{current_user.name.titleize}".white.on_blue
         puts "==================="
@@ -78,14 +79,13 @@ def run
   end
 
   while input
-    main_menu
-    input = gets.chomp.downcase
+    input = prompt.select("What would you like to do?", main_menu, cycle: true)
     case input
 
     when 'inventory'
       system "clear"
       puts "Your current inventory includes: ".white.on_blue if current_user.ingredients.length > 0
-      current_user.get_item_names("ingredients")
+      puts current_user.get_item_names("ingredients")
       puts "==================="
 
     when 'add ingredient'
@@ -97,38 +97,34 @@ def run
 
     when 'remove ingredient'
       system "clear"
-      puts "The following items are currently in your inventory".yellow
-      current_user.get_item_names("ingredients")
-      puts "Please enter the name of the ingredient you would like to delete:".yellow
-      selected_ingredient = gets.chomp.downcase
-      current_user.delete_ingredient(selected_ingredient)
+      # puts "The following items are currently in your inventory".yellow
+      ingredients = current_user.get_item_names("ingredients")
+      ingredients << "cancel"
+      selected_ingredient = prompt.select("Which ingredient would you like to delete?".red, ingredients, cycle: true)
+      current_user.delete_ingredient(selected_ingredient.downcase) if selected_ingredient != "cancel"
       puts ""
       puts "==================="
 
     when 'favorites'
       system "clear"
       puts "Your currently saved cocktails are: ".white.on_blue if current_user.cocktails.length > 0
-      current_user.get_item_names("cocktails")
+      puts current_user.get_item_names("cocktails")
       puts "==================="
 
     when 'add cocktail'
       system "clear"
-      puts "Please enter the name of the cocktail you would like to save:".yellow
-      input = gets.chomp.downcase
-      current_user.add_cocktail(input)
+      input = prompt.ask("Please enter the name of the cocktail you would like to save".yellow, required: true)
+      current_user.add_cocktail(input.downcase)
 
     when 'remove cocktail'
       system "clear"
-      puts "The following cocktails are currently on your favorites".yellow
-      current_user.get_item_names("cocktails")
-      puts "Please enter the name of the cocktail you would like to remove from your favorites.".yellow
-      response = gets.chomp.downcase
-      cocktail = Cocktail.find_by(name: response)
+      cocktails = current_user.get_item_names("cocktails")
+      cocktails << "cancel"
+      response = prompt.select("Please select the cocktail you would like to remove from your favorites.".yellow, cocktails, cycle: true)
+      cocktail = Cocktail.find_by(name: response.downcase) if response != "cancel"
       if response && current_user.cocktails.include?(cocktail)
         current_user.cocktails.destroy(cocktail)
         puts "#{cocktail.name.titleize} has been removed from your favorites".white.on_green
-      else
-        puts "We didn't that cocktail in your favorites".white.on_red
       end
       puts "==================="
 
@@ -153,26 +149,27 @@ def run
 
     when 'search cocktail'
       system "clear"
+      cocktail_names = Cocktail.get_names
+      cocktail_names << "cancel"
       puts "What cocktail would you like to look up?".yellow
-      searched_cocktail = gets.chomp.downcase
-      Cocktail.get_info(searched_cocktail)
+      searched_cocktail = prompt.select("Which cocktail would you like to select? (Cancel to go back)", cocktail_names, filter: true)
+      Cocktail.get_info(searched_cocktail.downcase, current_user) if searched_cocktail != "cancel"
       puts "==================="
 
     when 'cocktail roulette'
       system 'clear'
       #randomizes the cocktails and grabs one element
       random_cocktail = Cocktail.order("RANDOM()").first
-      Cocktail.get_info(random_cocktail.name)
+      Cocktail.get_info(random_cocktail.name, current_user)
       puts "==================="
 
     when 'create cocktail'
       system "clear"
-      puts "Please input the name of the cocktail you'd like to create:".yellow
-      input = gets.chomp.downcase
-      if Cocktail.get_names.include?(input)
+      input = prompt.ask("Please input the name of the cocktail you'd like to create:".yellow, required: true)
+      if Cocktail.get_names.include?(input.downcase)
         puts "I'm sorry, a cocktail already exists with that name".white.on_red
       else
-        Cocktail.create_cocktail(input)
+        Cocktail.create_cocktail(input.downcase)
       end
       puts "==================="
 
@@ -218,18 +215,30 @@ end
 
 def cocktail_art
   <<-'EOF'
-   \
-   .\"""""""""-.
-   \`\-------'`/
-    \ \__ o . /
-     \/  \  o/
-      \__/. /
-       \_ _/
-         Y
-         |
-         |
-     _.-' '-._
-    `---------`
+           \
+           .\"""""""""-.
+           \`\-------'`/
+            \ \__ o . /
+             \/  \  o/
+              \__/. /
+               \_ _/
+                 Y
+                 |
+                 |
+             _.-' '-._
+            `---------`
+  EOF
+end
+
+def cocktail_art2
+  <<-'EOF'
+__   __  __   __  __   __  _______  ___      _______  _______  __   __
+|  |_|  ||  | |  ||  |_|  ||       ||   |    |       ||       ||  | |  |
+|       ||  |_|  ||       ||   _   ||   |    |   _   ||    ___||  |_|  |
+|       ||       ||       ||  | |  ||   |    |  | |  ||   | __ |       |
+|       ||_     _| |     | |  |_|  ||   |___ |  |_|  ||   ||  ||_     _|
+| ||_|| |  |   |  |   _   ||       ||       ||       ||   |_| |  |   |
+|_|   |_|  |___|  |__| |__||_______||_______||_______||_______|  |___|
   EOF
 end
 

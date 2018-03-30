@@ -68,17 +68,22 @@ class Cocktail < ActiveRecord::Base
     end
   end
 
-  def self.get_info(cocktail_name)
+  def self.get_info(cocktail_name, user)
     searched_cocktail = Cocktail.find_by(name: cocktail_name)
+    checkmark = "\u2713"
       if searched_cocktail
       puts "==================="
       puts "#{searched_cocktail.name.titleize}".white.on_blue
       puts "Ingredients:".blue
       searched_cocktail.cocktail_ingredients.each do |ci|
         if ci.amount == nil || ci.amount.strip == ""
-          puts ci.ingredient.name
+          string = ci.ingredient.name.titleize
+          string += " #{checkmark.force_encoding('utf-8')}" if user.ingredients.include?(ci.ingredient)
+          puts string
         else
-          puts "#{ci.amount.strip} - #{ci.ingredient.name}"
+          string = "#{ci.amount.strip} - #{ci.ingredient.name.titleize}"
+          string += " #{checkmark.force_encoding('utf-8')}" if user.ingredients.include?(ci.ingredient)
+          puts string
         end
       end
       puts "Instructions:".blue

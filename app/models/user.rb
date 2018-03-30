@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
       puts 'error with item names'
     end
     if items.size > 0
-      puts items
+      items
     else
       puts "You havent saved any #{type} yet.".white.on_red
     end
