@@ -1,29 +1,14 @@
 require_relative '../config/environment'
 
 def login
-  puts "Please enter one of the following commands:".yellow
-  puts "Login".yellow + ": login with your existing username"
-  puts "Create Account".yellow + ": create a new user account"
+  {
+   ("Login".yellow + ": login with your existing username") => "login",
+   ("Create Account".yellow + ": create a new user account") => "create account",
+   ("Exit".red + ": quit this program") => "exit"
+  }
 end
 
 def main_menu
-  puts "Please enter one of the following commands:".yellow
-  puts "Inventory".yellow + ": display all your currently saved ingredients"
-  puts "Favorites".yellow + ": display all your currently saved cocktails"
-  puts "Options".yellow + ": display cocktails possible with your inventory"
-  puts "Add Ingredient".yellow + ": save an ingredient to your inventory"
-  puts "Remove Ingredient".yellow + ": remove ingredient from your inventory"
-  puts "Add Cocktail".yellow + ": save a cocktail to your favorites"
-  puts "Remove Cocktail".yellow + ": remove cocktail from your favorites"
-  puts "Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail"
-  puts "Create Cocktail".yellow + ": share a new cocktail recipe"
-  puts "Review Cocktail".yellow + ": submit review for specific cocktail"
-  puts "Update Cocktail".yellow + ": change details about a specific cocktail"
-  puts "Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail"
-  puts "Exit".red + ": quit this program"
-end
-
-def main_menu2
   {
     ("Inventory".yellow + ": display all your currently saved ingredients") => "inventory",
     ("Favorites".yellow + ": display all your currently saved cocktails") => "favorites",
@@ -44,14 +29,14 @@ end
 def run
   prompt = TTY::Prompt.new
   system "clear"
+  puts cocktail_art2.blue.blink
   puts cocktail_art.blue.blink
   puts "Welcome to your personal bar.".white.on_blue
   response = ""
   input = ""
 
   while response
-    login
-    response = gets.chomp.downcase
+    response = prompt.select("Please choose one of the following commands:".yellow , login, cycle: true)
     case response
 
     when "exit"
@@ -100,13 +85,13 @@ def run
   while input
     # main_menu
     # input = gets.chomp.downcase
-    input = prompt.select("What would you like to do?", main_menu2, cycle: true)
+    input = prompt.select("What would you like to do?", main_menu, cycle: true)
     case input
 
     when 'inventory'
       system "clear"
       puts "Your current inventory includes: ".white.on_blue if current_user.ingredients.length > 0
-      current_user.get_item_names("ingredients")
+      puts current_user.get_item_names("ingredients")
       puts "==================="
 
     when 'add ingredient'
@@ -118,38 +103,40 @@ def run
 
     when 'remove ingredient'
       system "clear"
-      puts "The following items are currently in your inventory".yellow
-      current_user.get_item_names("ingredients")
-      puts "Please enter the name of the ingredient you would like to delete:".yellow
-      selected_ingredient = gets.chomp.downcase
-      current_user.delete_ingredient(selected_ingredient)
+      # puts "The following items are currently in your inventory".yellow
+      ingredients = current_user.get_item_names("ingredients")
+      ingredients << "cancel"
+      # puts "Please enter the name of the ingredient you would like to delete:".yellow
+      # selected_ingredient = gets.chomp.downcase
+      selected_ingredient = prompt.select("Which ingredient would you like to delete?".red, ingredients, cycle: true)
+      current_user.delete_ingredient(selected_ingredient.downcase) if selected_ingredient != "cancel"
       puts ""
       puts "==================="
 
     when 'favorites'
       system "clear"
       puts "Your currently saved cocktails are: ".white.on_blue if current_user.cocktails.length > 0
-      current_user.get_item_names("cocktails")
+      puts current_user.get_item_names("cocktails")
       puts "==================="
 
     when 'add cocktail'
       system "clear"
-      puts "Please enter the name of the cocktail you would like to save:".yellow
-      input = gets.chomp.downcase
-      current_user.add_cocktail(input)
+      # puts "Please enter the name of the cocktail you would like to save:".yellow
+      # input = gets.chomp.downcase
+      input = prompt.ask("Please enter the name of the cocktail you would like to save".yellow, required: true)
+      current_user.add_cocktail(input.downcase)
 
     when 'remove cocktail'
       system "clear"
-      puts "The following cocktails are currently on your favorites".yellow
-      current_user.get_item_names("cocktails")
-      puts "Please enter the name of the cocktail you would like to remove from your favorites.".yellow
-      response = gets.chomp.downcase
-      cocktail = Cocktail.find_by(name: response)
+      # puts "The following cocktails are currently on your favorites".yellow
+      # current_user.get_item_names("cocktails")
+      cocktails = current_user.get_item_names("cocktails")
+      cocktails << "cancel"
+      response = prompt.select("Please select the cocktail you would like to remove from your favorites.".yellow, cocktails, cycle: true)
+      cocktail = Cocktail.find_by(name: response.downcase) if response != "cancel"
       if response && current_user.cocktails.include?(cocktail)
         current_user.cocktails.destroy(cocktail)
         puts "#{cocktail.name.titleize} has been removed from your favorites".white.on_green
-      else
-        puts "We didn't that cocktail in your favorites".white.on_red
       end
       puts "==================="
 
@@ -176,24 +163,25 @@ def run
       system "clear"
       puts "What cocktail would you like to look up?".yellow
       searched_cocktail = gets.chomp.downcase
-      Cocktail.get_info(searched_cocktail)
+      Cocktail.get_info(searched_cocktail, current_user)
       puts "==================="
 
     when 'cocktail roulette'
       system 'clear'
       #randomizes the cocktails and grabs one element
       random_cocktail = Cocktail.order("RANDOM()").first
-      Cocktail.get_info(random_cocktail.name)
+      Cocktail.get_info(random_cocktail.name, current_user)
       puts "==================="
 
     when 'create cocktail'
       system "clear"
-      puts "Please input the name of the cocktail you'd like to create:".yellow
-      input = gets.chomp.downcase
-      if Cocktail.get_names.include?(input)
+      # puts "Please input the name of the cocktail you'd like to create:".yellow
+      # input = gets.chomp.downcase
+      input = prompt.ask("Please input the name of the cocktail you'd like to create:".yellow, required: true)
+      if Cocktail.get_names.include?(input.downcase)
         puts "I'm sorry, a cocktail already exists with that name".white.on_red
       else
-        Cocktail.create_cocktail(input)
+        Cocktail.create_cocktail(input.downcase)
       end
       puts "==================="
 
@@ -251,6 +239,22 @@ def cocktail_art
          |
      _.-' '-._
     `---------`
+  EOF
+end
+
+def cocktail_art2
+  <<-'EOF'
+   .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.
+  | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
+  | | ____    ____ | || |  ____  ____  | || |  ____  ____  | || |     ____     | || |   _____      | || |     ____     | || |    ______    | || |  ____  ____  | |
+  | ||_   \  /   _|| || | |_  _||_  _| | || | |_  _||_  _| | || |   .'    `.   | || |  |_   _|     | || |   .'    `.   | || |  .' ___  |   | || | |_  _||_  _| | |
+  | |  |   \/   |  | || |   \ \  / /   | || |   \ \  / /   | || |  /  .--.  \  | || |    | |       | || |  /  .--.  \  | || | / .'   \_|   | || |   \ \  / /   | |
+  | |  | |\  /| |  | || |    \ \/ /    | || |    > `' <    | || |  | |    | |  | || |    | |   _   | || |  | |    | |  | || | | |    ____  | || |    \ \/ /    | |
+  | | _| |_\/_| |_ | || |    _|  |_    | || |  _/ /'`\ \_  | || |  \  `--'  /  | || |   _| |__/ |  | || |  \  `--'  /  | || | \ `.___]  _| | || |    _|  |_    | |
+  | ||_____||_____|| || |   |______|   | || | |____||____| | || |   `.____.'   | || |  |________|  | || |   `.____.'   | || |  `._____.'   | || |   |______|   | |
+  | |              | || |              | || |              | || |              | || |              | || |              | || |              | || |              | |
+  | '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |
+   '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
   EOF
 end
 

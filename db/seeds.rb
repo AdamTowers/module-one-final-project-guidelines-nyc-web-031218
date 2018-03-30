@@ -5,7 +5,7 @@ id_lookup_url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
 
 drink_ingredients = ["vodka", "tequila", "whiskey", "whisky", "rum", "gin", "cognac",
    "triple sec", "blue curacao", "dark rum", "light rum",
-   "white rum", "coconut rum", "orange juice"
+   "white rum", "coconut rum", "orange juice", "salt", "ice", "water", "club soda"
 ]
 
 id_array = []
@@ -27,7 +27,7 @@ id_array.each do |id|
     (1..15).each do |number|
       unless drink["strIngredient"+number.to_s] == "" || drink["strIngredient"+number.to_s] == " " || drink["strIngredient"+number.to_s] == nil
         current_ingredient = Ingredient.find_or_create_by(name: drink["strIngredient"+number.to_s].downcase)
-        CocktailIngredient.create(amount: drink["strMeasure"+number.to_s], cocktail_id: current_cocktail.id, ingredient_id: current_ingredient.id)
+        CocktailIngredient.find_or_create_by(amount: drink["strMeasure"+number.to_s], cocktail_id: current_cocktail.id, ingredient_id: current_ingredient.id)
       end
     end
   end
