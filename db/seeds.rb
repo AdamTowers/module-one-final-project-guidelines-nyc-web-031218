@@ -3,7 +3,10 @@ require_relative '../config/environment.rb'
 ingredients_url = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?i="
 id_lookup_url = "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
 
-drink_ingredients = ["vodka", "tequila", "whiskey", "rum", "gin", "cognac"]
+drink_ingredients = ["vodka", "tequila", "whiskey", "whisky", "rum", "gin", "cognac",
+   "triple sec", "blue curacao", "dark rum", "light rum",
+   "white rum", "coconut rum", "orange juice"
+]
 
 id_array = []
 drink_ingredients.each do |ingredient|

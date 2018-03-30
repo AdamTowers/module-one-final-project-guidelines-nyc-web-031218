@@ -23,6 +23,24 @@ def main_menu
   puts "Exit".red + ": quit this program"
 end
 
+def main_menu2
+  {
+    ("Inventory".yellow + ": display all your currently saved ingredients") => "inventory",
+    ("Favorites".yellow + ": display all your currently saved cocktails") => "favorites",
+    ("Options".yellow + ": display cocktails possible with your inventory") => "options",
+    ("Add Ingredient".yellow + ": save an ingredient to your inventory") => "add ingredient",
+    ("Remove Ingredient".yellow + ": remove ingredient from your inventory") => "remove ingredient",
+    ("Add Cocktail".yellow + ": save a cocktail to your favorites") => "add cocktail",
+    ("Remove Cocktail".yellow + ": remove cocktail from your favorites") => "remove cocktail",
+    ("Search Cocktail".yellow + ": display ingredients and instructions for a specific cocktail") => "search cocktail",
+    ("Create Cocktail".yellow + ": share a new cocktail recipe") => "create cocktail",
+    ("Review Cocktail".yellow + ": submit review for specific cocktail") => "review cocktail",
+    ("Update Cocktail".yellow + ": change details about a specific cocktail") => "update cocktail",
+    ("Cocktail Roulette".yellow + ": display ingredients and instrutions for a random cocktail") => "cocktail roulette",
+    ("Exit".red + ": quit this program") => "exit"
+  }
+end
+
 def run
   prompt = TTY::Prompt.new
   system "clear"
@@ -80,8 +98,9 @@ def run
   end
 
   while input
-    main_menu
-    input = gets.chomp.downcase
+    # main_menu
+    # input = gets.chomp.downcase
+    input = prompt.select("What would you like to do?", main_menu2, cycle: true)
     case input
 
     when 'inventory'
